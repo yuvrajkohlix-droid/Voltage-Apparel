@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VOLTAGE — Drop-Ready Streetwear</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --off-black: #111111;
+    --card-bg: #161616;
+    --volt: #d4ff00;
+    --volt-dim: #a8cc00;
+    --white: #f5f5f5;
+    --gray: #888;
+    --light-gray: #bbb;
+    --border: rgba(212,255,0,0.15);
+    --red: #ff3c3c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: var(--volt); border-radius: 3px; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; height: 64px;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 3px;
+    color: var(--volt);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .nav-links { display: flex; gap: 8px; list-style: none; }
+
+  .nav-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--light-gray);
+    text-decoration: none;
+    padding: 8px 14px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--volt);
+    border-color: var(--border);
+    background: rgba(212,255,0,0.05);
+  }
+
+  /* .nav-cart {
+    background: var(--volt);
+    color: var(--black);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: none;
+    padding: 9px 20px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  } */
+
+  /* .nav-cart:hover { background: var(--volt-dim); transform: translateY(-1px); } */
+
+  /* ── PAGES ── */
+  .page { display: none; padding-top: 64px; min-height: 100vh; }
+  .page.active { display: block; }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    height: calc(100vh - 64px);
+    display: flex; align-items: center;
+    overflow: hidden;
+    background: var(--off-black);
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 70% 50%, rgba(212,255,0,0.07) 0%, transparent 70%),
+      repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(212,255,0,0.03) 80px),
+      repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(212,255,0,0.03) 80px);
+  }
+
+  .hero-ticker {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: var(--volt);
+    height: 40px;
+    display: flex; align-items: center;
+    overflow: hidden;
+  }
+
+  .ticker-inner {
+    display: flex; gap: 60px;
+    white-space: nowrap;
+    animation: ticker 18s linear infinite;
+  }
+
+  .ticker-inner span {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--black);
+  }
+
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    padding: 0 60px;
+    max-width: 700px;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--volt);
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 12vw, 9rem);
+    line-height: 0.92;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.35s forwards;
+  }
+
+  .hero-title span { color: var(--volt); }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--gray);
+    line-height: 1.6;
+    margin-bottom: 36px;
+    max-width: 420px;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.5s forwards;
+  }
+
+  .hero-cta {
+    display: flex; gap: 14px; flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.65s forwards;
+  }
+
+  .btn-primary {
+    background: var(--volt);
+    color: var(--black);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-primary:hover { background: var(--volt-dim); transform: translateY(-2px); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 14px 32px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-outline:hover { border-color: var(--volt); color: var(--volt); }
+
+  .hero-badge {
+    position: absolute;
+    right: 80px; top: 50%;
+    transform: translateY(-50%);
+    width: 140px; height: 140px;
+    border: 2px solid var(--volt);
+    border-radius: 50%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    animation: rotateSlow 12s linear infinite;
+  }
+
+  .hero-badge-inner {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--volt);
+  }
+
+  .hero-badge-sub {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray);
+  }
+
+  @keyframes rotateSlow {
+    from { transform: translateY(-50%) rotate(0deg); }
+    to { transform: translateY(-50%) rotate(360deg); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTION SHARED ── */
+  .section { padding: 80px 60px; }
+
+  .section-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 48px;
+  }
+
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--volt);
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 3.8rem);
+    letter-spacing: 2px;
+    line-height: 1;
+    color: var(--white);
+  }
+
+  /* ── PRODUCT GRID ── */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2px;
+  }
+
+  .product-card {
+    background: var(--card-bg);
+    border: 1px solid #1e1e1e;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.25s, border-color 0.25s;
+    animation: fadeUp 0.5s both;
+  }
+
+  .product-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(212,255,0,0.3);
+    z-index: 2;
+  }
+
+  .product-card:nth-child(1) { animation-delay: 0.05s; }
+  .product-card:nth-child(2) { animation-delay: 0.1s; }
+  .product-card:nth-child(3) { animation-delay: 0.15s; }
+  .product-card:nth-child(4) { animation-delay: 0.2s; }
+  .product-card:nth-child(5) { animation-delay: 0.25s; }
+  .product-card:nth-child(6) { animation-delay: 0.3s; }
+
+  .product-img-wrap {
+    width: 100%;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    background: #1a1a1a;
+    position: relative;
+  }
+
+  .product-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s;
+  }
+
+  .product-card:hover .product-img-wrap img {
+    transform: scale(1.05);
+  }
+
+  .product-badge {
+    position: absolute; top: 12px; left: 12px;
+    background: var(--volt);
+    color: var(--black);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 1px;
+  }
+
+  .product-badge.new { background: var(--volt); }
+  .product-badge.sale { background: var(--red); color: #fff; }
+
+  .product-info { padding: 18px 20px 22px; }
+
+  .product-category {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 4px;
+  }
+
+  .product-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: 1px;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+
+  .product-desc-short {
+    font-size: 0.82rem;
+    color: var(--gray);
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+
+  .product-footer {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .product-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    color: var(--volt);
+    letter-spacing: 1px;
+  }
+
+  .product-price .old {
+    font-size: 1rem;
+    color: var(--gray);
+    text-decoration: line-through;
+    margin-left: 6px;
+  }
+
+  .add-btn {
+    background: var(--volt);
+    color: var(--black);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: none;
+    padding: 9px 16px;
+    border-radius: 1px;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+
+  .add-btn:hover { background: var(--volt-dim); transform: scale(1.04); }
+
+  /* ── MARQUEE STRIP ── */
+  .marquee-strip {
+    background: var(--off-black);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 0;
+    overflow: hidden;
+  }
+
+  .marquee-inner {
+    display: flex; gap: 60px;
+    white-space: nowrap;
+    animation: ticker 24s linear infinite;
+  }
+
+  .marquee-inner span {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 4px;
+    color: var(--gray);
+  }
+
+  .marquee-inner span.accent { color: var(--volt); }
+
+  /* ── ABOUT PAGE ── */
+  .about-hero {
+    background: var(--off-black);
+    padding: 80px 60px 60px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-hero::before {
+    content: 'VOLTAGE';
+    position: absolute;
+    right: -20px; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18vw;
+    color: rgba(212,255,0,0.03);
+    letter-spacing: 10px;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .about-body {
+    font-size: 1rem;
+    color: var(--light-gray);
+    line-height: 1.8;
+  }
+
+  .about-body p { margin-bottom: 20px; }
+  .about-body strong { color: var(--volt); }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-top: 40px;
+  }
+
+  .stat-box {
+    background: var(--card-bg);
+    border: 1px solid #1e1e1e;
+    padding: 28px 24px;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    color: var(--volt);
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray);
+  }
+
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 2px;
+  }
+
+  .value-card {
+    background: var(--card-bg);
+    border: 1px solid #1e1e1e;
+    padding: 36px 28px;
+    transition: border-color 0.2s;
+  }
+
+  .value-card:hover { border-color: var(--border); }
+
+  .value-icon {
+    font-size: 2rem;
+    margin-bottom: 16px;
+  }
+
+  .value-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+
+  .value-text {
+    font-size: 0.88rem;
+    color: var(--gray);
+    line-height: 1.6;
+  }
+
+  /* ── CONTACT PAGE ── */
+  .contact-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 2px;
+    min-height: calc(100vh - 144px);
+  }
+
+  .contact-info {
+    background: var(--off-black);
+    padding: 60px 50px;
+    border-right: 1px solid var(--border);
+  }
+
+  .contact-form-wrap {
+    background: var(--card-bg);
+    padding: 60px 50px;
+  }
+
+  .contact-item {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 32px;
+    align-items: flex-start;
+  }
+
+  .contact-icon {
+    width: 40px; height: 40px;
+    background: rgba(212,255,0,0.1);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .contact-item-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--volt);
+    margin-bottom: 4px;
+  }
+
+  .contact-item-val {
+    font-size: 0.9rem;
+    color: var(--light-gray);
+    line-height: 1.5;
+  }
+
+  .social-row {
+    display: flex; gap: 10px; margin-top: 48px;
+  }
+
+  .social-btn {
+    background: transparent;
+    border: 1px solid #2a2a2a;
+    color: var(--gray);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.18s;
+  }
+
+  .social-btn:hover { border-color: var(--volt); color: var(--volt); }
+
+  /* Form */
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+
+  .form-group { margin-bottom: 14px; }
+
+  .form-label {
+    display: block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 8px;
+  }
+
+  .form-control {
+    width: 100%;
+    background: #1e1e1e;
+    border: 1px solid #2a2a2a;
+    border-radius: 2px;
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.9rem;
+    padding: 12px 16px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .form-control:focus { border-color: var(--volt); }
+  .form-control::placeholder { color: #444; }
+
+  textarea.form-control { resize: vertical; min-height: 120px; }
+
+  .submit-btn {
+    background: var(--volt);
+    color: var(--black);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border: none;
+    padding: 16px 40px;
+    width: 100%;
+    border-radius: 2px;
+    cursor: pointer;
+    margin-top: 6px;
+    transition: all 0.2s;
+  }
+
+  .submit-btn:hover { background: var(--volt-dim); transform: translateY(-2px); }
+
+  .form-success {
+    display: none;
+    background: rgba(212,255,0,0.08);
+    border: 1px solid var(--border);
+    padding: 16px 20px;
+    border-radius: 2px;
+    font-size: 0.9rem;
+    color: var(--volt);
+    margin-top: 14px;
+    text-align: center;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--off-black);
+    border-top: 1px solid var(--border);
+    padding: 40px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 3px;
+    color: var(--volt);
+  }
+
+  .footer-copy {
+    font-size: 0.8rem;
+    color: var(--gray);
+  }
+
+  .footer-links {
+    display: flex; gap: 24px; list-style: none;
+  }
+
+  .footer-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--volt); }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 28px; right: 28px; z-index: 999;
+    background: var(--volt);
+    color: var(--black);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 14px 24px;
+    border-radius: 2px;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+  }
+
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .section { padding: 60px 24px; }
+    .hero-content { padding: 0 24px; }
+    .hero-badge { display: none; }
+    .about-grid { grid-template-columns: 1fr; }
+    .contact-layout { grid-template-columns: 1fr; }
+    .values-grid { grid-template-columns: 1fr 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    footer { padding: 30px 24px; flex-direction: column; text-align: center; }
+    .about-hero { padding: 60px 24px; }
+    .contact-info, .contact-form-wrap { padding: 40px 24px; }
+  }
+
+  @media (max-width: 600px) {
+    .values-grid { grid-template-columns: 1fr; }
+    .about-stats { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <span class="nav-logo" onclick="showPage('home')">VOLTAGE</span>
+  <ul class="nav-links">
+    <li><a href="#" class="active" onclick="showPage('home'); return false;">Shop</a></li>
+    <li><a href="#" onclick="showPage('about'); return false;">About</a></li>
+    <li><a href="#" onclick="showPage('contact'); return false;">Contact</a></li>
+  </ul>
+  <!-- <button class="nav-cart" onclick="showToast('🛒 Cart coming soon!')">Cart (0)</button> -->
+</nav>
+
+<!-- ═══════════════ HOME PAGE ═══════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">⚡ New Drop — Spring 2026</div>
+      <h1 class="hero-title">WEAR<br>THE <span>VOLT</span></h1>
+      <p class="hero-sub">Street-ready fits built for the guys who move fast and dress harder. Here to hook you up with the right style.</p>
+      <div class="hero-cta">
+        <button class="btn-primary" onclick="document.getElementById('shop-section').scrollIntoView({behavior:'smooth'})">Shop Now</button>
+        <button class="btn-outline" onclick="showPage('about')">Our Story</button>
+      </div>
+    </div>
+    <div class="hero-badge">
+      <div class="hero-badge-inner">GREAT<br>DISCOUNTS</div>
+      <div class="hero-badge-sub">Orders $90+</div>
+    </div>
+    <div class="hero-ticker">
+      <div class="ticker-inner">
+        <span>$5 OFF ON ORDERS $90+</span>
+        <span>⚡</span>
+        <span>NEW DROPS FREQUENTLY</span>
+        <span>⚡</span>
+        <span>LIMITED QUANTITIES</span>
+        <span>⚡</span>
+        <span>USE CODE VOLTAGE15 FOR A CHANCE TO GET 15% OFF</span>
+        <span>⚡</span>
+        <span>$5 OFF ON ORDERS $90+</span>
+        <span>⚡</span>
+        <span>NEW DROPS FREQUENTLY</span>
+        <span>⚡</span>
+        <span>LIMITED QUANTITIES</span>
+        <span>⚡</span>
+        <span>USE CODE VOLTAGE15 FOR A CHANCE TO GET 15% OFF</span>
+        <span>⚡</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Marquee -->
+  <div class="marquee-strip">
+    <div class="marquee-inner">
+      <span class="accent">VOLTAGE</span>
+      <span>STREETWEAR</span>
+      <span class="accent">•</span>
+      <span>DROP CULTURE</span>
+      <span class="accent">•</span>
+      <span>BUILT DIFFERENT</span>
+      <span class="accent">•</span>
+      <span>HIGH SCHOOL APPROVED</span>
+      <span class="accent">•</span>
+      <span class="accent">VOLTAGE</span>
+      <span>STREETWEAR</span>
+      <span class="accent">•</span>
+      <span>DROP CULTURE</span>
+      <span class="accent">•</span>
+      <span>BUILT DIFFERENT</span>
+      <span class="accent">•</span>
+      <span>HIGH SCHOOL APPROVED</span>
+      <span class="accent">•</span>
+    </div>
+  </div>
+
+  <!-- Shop Section -->
+  <section class="section" id="shop-section">
+    <div class="section-header">
+      <div>
+        <div class="section-label">Latest Drops</div>
+        <h2 class="section-title">Shop All Fits</h2>
+      </div>
+    </div>
+
+    <div class="products-grid" id="products-grid"></div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">VOLTAGE</div>
+    <ul class="footer-links">
+      <li><a href="#" onclick="showPage('home'); return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('about'); return false;">About</a></li>
+      <li><a href="#" onclick="showPage('contact'); return false;">Contact</a></li>
+    </ul>
+    <p class="footer-copy">© 2026 Voltage Apparel. All rights reserved.</p>
+  </footer>
+</div>
+
+<!-- ═══════════════ ABOUT PAGE ═══════════════ -->
+<div id="page-about" class="page">
+  <div class="about-hero">
+    <div>
+      <div class="section-label">Our Story</div>
+      <h1 class="section-title" style="font-size: clamp(3rem, 7vw, 5.5rem); margin-bottom: 20px;">BUILT IN<br>THE HALLS</h1>
+    </div>
+    <div class="about-grid" style="margin-top: 40px;">
+      <div class="about-body">
+        <p>Voltage started in 2026 when a group of high school sophmores got tired of wearing the same cookie-cutter fits as everyone else. We wanted gear that <strong>actually hit</strong> — clothes that looked good in the hallways, at the game, and everywhere in between.</p>
+        <p>Every piece we drop is produced by people who actually go to school. We test everything ourselves. If it doesn't pass the <strong>hallway test</strong>, it doesn't make the cut.</p>
+        <p>All prices are negotiable. More pictures of the stitching and other things can be seen. Just DM us.</p>
+      </div>
+      <div class="about-stats">
+        <div class="stat-box">
+          <div class="stat-num">100+</div>
+          <div class="stat-label">Happy Customers</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">12</div>
+          <div class="stat-label">Drops Released</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">4.9★</div>
+          <div class="stat-label">Avg Rating</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">2026</div>
+          <div class="stat-label">Founded</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="section" style="padding-top: 2px;">
+    <div class="section-header" style="margin-top: 60px;">
+      <div>
+        <div class="section-label">What We Stand For</div>
+        <h2 class="section-title">Our Values</h2>
+      </div>
+    </div>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon">⚡</div>
+        <div class="value-title">Authenticity</div>
+        <p class="value-text">No fakes, no reps. Every design is rooted in real streetwear culture — not trend reports written by 40-year-olds in offices.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🔥</div>
+        <div class="value-title">Quality First</div>
+        <p class="value-text">Heavy fabrics, tight stitching, lasting prints. We'd rather drop less and hit harder than flood the market with junk.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">💰</div>
+        <div class="value-title">Fair Pricing</div>
+        <p class="value-text">Teen budget is real. We keep our prices honest so you don't have to stress your allowance to look fresh.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">VOLTAGE</div>
+    <ul class="footer-links">
+      <li><a href="#" onclick="showPage('home'); return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('about'); return false;">About</a></li>
+      <li><a href="#" onclick="showPage('contact'); return false;">Contact</a></li>
+    </ul>
+    <p class="footer-copy">© 2026 Voltage Apparel. All rights reserved.</p>
+  </footer>
+</div>
+
+<!-- ═══════════════ CONTACT PAGE ═══════════════ -->
+<div id="page-contact" class="page">
+  <section class="section" style="padding-bottom: 0;">
+    <div class="section-label">Hit Us Up</div>
+    <h1 class="section-title" style="margin-bottom: 40px;">Contact Us</h1>
+  </section>
+
+  <div class="contact-layout">
+    <div class="contact-info">
+      <div class="contact-item">
+        <div class="contact-icon">📧</div>
+        <div>
+          <div class="contact-item-label">Email</div>
+          <div class="contact-item-val">support@voltagewear.com<br>orders@voltagewear.com</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📱</div>
+        <div>
+          <div class="contact-item-label">DM Us</div>
+          <div class="contact-item-val">@voltageapparel on Instagram</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🕐</div>
+        <div>
+          <div class="contact-item-label">Response Time</div>
+          <div class="contact-item-val">We reply within 24 hours<br>Mon – SUN, 8AM – 8PM EST</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📦</div>
+        <div>
+          <div class="contact-item-label">Returns & Exchanges</div>
+          <div class="contact-item-val">Free returns within 30 days.<br>Drop us a message to start.</div>
+        </div>
+      </div>
+
+      <!-- <div class="social-row">
+        <button class="social-btn" onclick="showToast('Opening Instagram...')">Instagram</button>
+        <button class="social-btn" onclick="showToast('Opening TikTok...')">TikTok</button>
+        <button class="social-btn" onclick="showToast('Opening Twitter...')">Twitter</button>
+      </div> -->
+    </div>
+
+    <div class="contact-form-wrap">
+      <div style="margin-bottom: 30px;">
+        <div class="section-label">Send a Message</div>
+        <div style="font-family: 'Barlow Condensed', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--white); letter-spacing: 1px;">We'll hit you back fast.</div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input type="text" class="form-control" placeholder="Your first name" id="fname">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name(Optional)</label>
+          <input type="text" class="form-control" placeholder="Your last name" id="lname">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-control" placeholder="your@email.com" id="email">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Subject</label>
+        <select class="form-control" id="subject">
+          <option value="" style="background:#1e1e1e;">Choose a topic...</option>
+          <option value="order" style="background:#1e1e1e;">Order Issue</option>
+          <option value="return" style="background:#1e1e1e;">Return / Exchange</option>
+          <option value="collab" style="background:#1e1e1e;">Collab / Partnership</option>
+          <option value="other" style="background:#1e1e1e;">General Question</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Message</label>
+        <textarea class="form-control" placeholder="What's good? Tell us what you need..." id="message"></textarea>
+      </div>
+
+      <button class="submit-btn" onclick="submitForm()">Send It ⚡</button>
+      <div class="form-success" id="form-success">
+        ⚡ Message sent! We'll hit you back within 24 hours.
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">VOLTAGE</div>
+    <ul class="footer-links">
+      <li><a href="#" onclick="showPage('home'); return false;">Shop</a></li>
+      <li><a href="#" onclick="showPage('about'); return false;">About</a></li>
+      <li><a href="#" onclick="showPage('contact'); return false;">Contact</a></li>
+    </ul>
+    <p class="footer-copy">© 2026 Voltage Apparel. All rights reserved.</p>
+  </footer>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Products Data ──
+const products = [
+  {
+    name: "Black Oversized Hoodie",
+    category: "Hoodies",
+    price: 54.99,
+    //badge: "NEW",
+    img: "BHE.JPEG",
+    desc: "Oversized fleece with drop-shoulder cut. Built for layering or wearing solo. A perfect black hoodie that goes with every fit in your rotation. To buy now DM our instagram @voltageapparel"
+  },
+  {
+    name: "Black Fleece Pants",
+    category: "Bottoms",
+    price: 54.99,
+    //oldPrice: 54.99,
+    //badge: "SALE",
+    img: "BPE.jpg",
+    desc: "Pants with a relaxed fit and adjustable waistband. Black goes with every fit. Extremely popular. Very comfortable fleece. To buy now DM our instagram @voltageapparel"
+  },
+  {
+    name: "Black Wash Tee",
+    category: "Tops",
+    price: 29.99,
+    //badge: "NEW",
+    img: "BTE.jpg",
+    desc: "One-of-a-kind acid wash process means every tee is unique. Very breathable and trending. A nice shirt at an even nicer price. To buy now DM our instagram @voltageapparel"
+  },
+  {
+    name: "Black Fleece Shorts",
+    category: "Bottoms",
+    price: 45.00,
+    img: "BSE.JPEG",
+    desc: "Same fleece as the hoodie, now in shorts form. Elastic waistband with drawstring, side pockets, relaxed cut. Super comfy. To buy now DM our instagram @voltageapparel"
+  },
+  {
+    name: "Light Oatmeal Oversized Hoodie",
+    category: "Hoodies",
+    price: 54.99,
+    //badge: "NEW",
+    img: "LHE.jpg",
+    desc: "Oversized fleece with drop-shoulder cut. Built for layering or wearing solo. A light gray hoodie that goes with every fit in your rotation. To buy now DM our instagram @voltageapparel"
+  },
+  {
+    name: "Light Oatmeal Fleece Pants",
+    category: "Bottoms",
+    price: 54.99,
+    //oldPrice: 54.99,
+    //badge: "SALE",
+    img: "LPE.jpg",
+    desc: "Pants with a relaxed fit and adjustable waistband. Light gray goes with every fit. Extremely popular. Very comfortable fleece. To buy now DM our instagram @voltageapparel"
+  },
+  {
+    name: "Light Oatmeal Wash Tee",
+    category: "Tops",
+    price: 29.99,
+    //badge: "NEW",
+    img: "LTE.jpg",
+    desc: "One-of-a-kind acid wash process means every tee is unique. Very breathable and trending. A nice shirt at an even nicer price. To buy now DM our instagram @voltageapparel"
+  },
+  {
+    name: "Light Oatmeal Fleece Shorts",
+    category: "Bottoms",
+    price: 45.00,
+    img: "LSE.JPEG",
+    desc: "Same fleece as the hoodie, now in shorts form. Elastic waistband with drawstring, side pockets, relaxed cut. Super comfy. To buy now DM our instagram @voltageapparel"
+  },
+  {
+    name: "Dark Oatmeal Oversized Hoodie",
+    category: "Hoodies",
+    price: 54.99,
+    //badge: "NEW",
+    img: "DHE.jpg",
+    desc: "Oversized fleece with drop-shoulder cut. Built for layering or wearing solo. A dark gray hoodie that goes with every fit in your rotation. To buy now DM our instagram @voltageapparel"
+  },
+  {
+    name: "Dark Oatmeal Fleece Pants",
+    category: "Bottoms",
+    price: 54.99,
+    //oldPrice: 54.99,
+    //badge: "SALE",
+    img: "DPE.jpg",
+    desc: "Pants with a relaxed fit and adjustable waistband. Dark gray goes with every fit. Extremely popular. Very comfortable fleece. To buy now DM our instagram @voltageapparel"
+  },
+  {
+    name: "Dark Oatmeal Wash Tee",
+    category: "Tops",
+    price: 29.99,
+    //badge: "NEW",
+    img: "DTE.jpg",
+    desc: "One-of-a-kind acid wash process means every tee is unique. Very breathable and trending. A nice shirt at an even nicer price. To buy now DM our instagram @voltageapparel"
+  },
+  {
+    name: "Dark Oatmeal Fleece Shorts",
+    category: "Bottoms",
+    price: 45.00,
+    img: "DSE.JPEG",
+    desc: "Same fleece as the hoodie, now in shorts form. Elastic waistband with drawstring, side pockets, relaxed cut. Super comfy. To buy now DM our instagram @voltageapparel"
+  }
+];
+
+// ── Render Products ──
+function renderProducts() {
+  const grid = document.getElementById('products-grid');
+  grid.innerHTML = products.map(p => `
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <img src="${p.img}" alt="${p.name}" loading="lazy">
+        ${p.badge ? `<span class="product-badge ${p.badge === 'SALE' ? 'sale' : 'new'}">${p.badge}</span>` : ''}
+      </div>
+      <div class="product-info">
+        <div class="product-category">${p.category}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-desc-short">${p.desc}</div>
+        <div class="product-footer">
+          <div class="product-price">
+            $${p.price.toFixed(2)}
+            ${p.oldPrice ? `<span class="old">$${p.oldPrice.toFixed(2)}</span>` : ''}
+          </div>
+          <!-- <button class="add-btn" onclick="addToCart('${p.name}')">Add +</button> -->
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── Page Navigation ──
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Toast ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// ── Add to Cart ──
+//function addToCart(name) {
+  //showToast(`⚡ ${name} added to cart!`);
+//}
+
+// ── Contact Form ──
+function submitForm() {
+  const f = document.getElementById('fname').value;
+  const e = document.getElementById('email').value;
+  if (!f || !e) { showToast('⚠️ Fill out all required fields!'); return; }
+  document.getElementById('form-success').style.display = 'block';
+  showToast('⚡ Message sent!');
+  ['fname','lname','email','subject','message'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+}
+
+renderProducts();
+</script>
+</body>
+</html>
